@@ -2,7 +2,7 @@
 
 ## Description 
 
-- Definition of simple domain model with a product repository supported by SQL Server and Entity Framework Core. 
+- Definition of simple domain model with a product repository supported by SQL Server and [Entity Framework Core](https://learn.microsoft.com/en-us/ef/core/). 
 - Development the HomeController controller that can create paginated product lists. 
 - Setting clean and friendly URL schemes. 
 - Styling of the content.
