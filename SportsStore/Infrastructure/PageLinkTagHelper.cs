@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -10,11 +11,21 @@ namespace SportsStore.Infrastructure
    [HtmlTargetElement("div", Attributes = "page-model")]
    public class PageLinkTagHelper : TagHelper
     {
-        private IUrlHelperFactory urlHelperFactory;
+        private readonly IUrlHelperFactory urlHelperFactory;
 
+        public bool PageClassesEnabled { get; set; }
+
+        public string PageClass { get; set; } = string.Empty;
+
+        public string PageClassNormal { get; set; } = string.Empty;
+
+        public string PageClassSelected { get; set; } = string.Empty;
+
+#pragma warning disable SA1201
         public PageLinkTagHelper(IUrlHelperFactory helperFactory)
+#pragma warning restore SA1201
         {
-            urlHelperFactory = helperFactory;
+            this.urlHelperFactory = helperFactory;
         }
 
         [ViewContext]
@@ -27,17 +38,25 @@ namespace SportsStore.Infrastructure
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (ViewContext != null && PageModel != null)
+            if (this.ViewContext != null && this.PageModel != null)
             {
-                IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+                IUrlHelper urlHelper = this.urlHelperFactory.GetUrlHelper(this.ViewContext);
                 TagBuilder result = new TagBuilder("div");
-                for (int i = 1; i <= PageModel.TotalPages; i++)
+                for (int i = 1; i <= this.PageModel.TotalPages; i++)
                 {
                     TagBuilder tag = new TagBuilder("a");
-                    tag.Attributes["href"] = urlHelper.Action(PageAction,
+                    tag.Attributes["href"] = urlHelper.Action(
+                        this.PageAction,
                         new { productPage = i });
-                    tag.InnerHtml.Append(i.ToString());
+                    _ = tag.InnerHtml.Append(i.ToString(CultureInfo.InvariantCulture));
                     result.InnerHtml.AppendHtml(tag);
+                   
+                    if (this.PageClassesEnabled)
+                    {
+                        tag.AddCssClass(this.PageClass);
+                        tag.AddCssClass(i == this.PageModel.CurrentPage
+                            ? this.PageClassSelected : this.PageClassNormal);
+                    }
                 }
 
                 output.Content.AppendHtml(result.InnerHtml);

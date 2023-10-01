@@ -26,20 +26,19 @@ namespace SportsStore.Controllers
 
         public ViewResult Index(int productPage = 1)
         {
-            return View(new ProductsListViewModel
+            return this.View(new ProductsListViewModel
             {
-                Products = repository.Products
+                Products = this.repository.Products
                                .OrderBy(p => p.ProductId)
-                               .Skip((productPage - 1) * PageSize)
-                               .Take(PageSize),
+                               .Skip((productPage - 1) * this.PageSize)
+                               .Take(this.PageSize),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = productPage,
-                    ItemsPerPage = PageSize,
-                    TotalItems = repository.Products.Count(),
+                    ItemsPerPage = this.PageSize,
+                    TotalItems = this.repository.Products.Count(),
                 },
             });
         }
-
     }
 }

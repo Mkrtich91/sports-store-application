@@ -4,7 +4,9 @@
 
 namespace SportsStore.Migrations
 {
+#pragma warning disable SA1601
     public partial class Initial : Migration
+#pragma warning restore SA1601
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +19,7 @@ namespace SportsStore.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 },
                 constraints: table =>
                 {
