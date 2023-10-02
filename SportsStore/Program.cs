@@ -43,6 +43,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "/",
     defaults: new { Controller = "Home", action = "Index" });
+app.MapControllerRoute(
+      "remove",
+      "Remove",
+      new { Controller = "Cart", action = "Remove" });
 
 app.MapDefaultControllerRoute();
 

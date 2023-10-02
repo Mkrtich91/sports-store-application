@@ -29,6 +29,18 @@ namespace SportsStore.Controllers
         }
 
         [HttpPost]
+        [Route("Cart/Remove")]
+        public IActionResult Remove(long productId, string returnUrl)
+        {
+            Cart.RemoveLine(Cart.Lines.First(cl => cl.Product.ProductId == productId).Product);
+            return View("Index", new CartViewModel
+            {
+                Cart = Cart,
+                ReturnUrl = returnUrl ?? "/"
+            });
+        }
+
+        [HttpPost]
         public IActionResult Index(long productId, string returnUrl)
         {
             Product? product = this.repository.Products.FirstOrDefault(p => p.ProductId == productId);
