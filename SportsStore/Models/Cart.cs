@@ -2,19 +2,26 @@
 {
     public class Cart
     {
-        private List<CartLine> lines = new List<CartLine>();
+#pragma warning disable IDE0090
+        private readonly List<CartLine> lines = new List<CartLine>();
+#pragma warning restore IDE0090
 
-        public IReadOnlyList<CartLine> Lines { get { return lines; } }
+        public IReadOnlyList<CartLine> Lines
+        {
+            get { return this.lines; }
+        }
 
         public void AddItem(Product product, int quantity)
         {
-            CartLine? line = lines.
+#pragma warning disable S2971
+            CartLine? line = this.lines.
                 Where(p => p.Product.ProductId == product.ProductId)
                 .FirstOrDefault();
+#pragma warning restore S2971
 
             if (line is null)
             {
-                lines.Add(new CartLine
+                this.lines.Add(new CartLine
                 {
                     Product = product,
                     Quantity = quantity,
@@ -27,11 +34,11 @@
         }
 
         public void RemoveLine(Product product)
-            => lines.RemoveAll(l => l.Product.ProductId == product.ProductId);
+            => this.lines.RemoveAll(l => l.Product.ProductId == product.ProductId);
 
         public decimal ComputeTotalValue()
-            => lines.Sum(e => e.Product.Price * e.Quantity);
+            => this.lines.Sum(e => e.Product.Price * e.Quantity);
 
-        public void Clear() => lines.Clear();
+        public void Clear() => this.lines.Clear();
     }
 }

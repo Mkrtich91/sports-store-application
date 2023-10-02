@@ -55,9 +55,11 @@ namespace SportsStore.Infrastructure
                         new { productPage = i });
                     _ = tag.InnerHtml.Append(i.ToString(CultureInfo.InvariantCulture));
                     result.InnerHtml.AppendHtml(tag);
-                    PageUrlValues[key: "productPage"] = i;
-              tag.Attributes[key: "href"] = urlHelper.Action(action: PageAction, values: PageUrlValues);
-              tag.Attributes[key: "href"] = urlHelper.RouteUrl(routeName: PageRoute, values: PageUrlValues);
+                    this.PageUrlValues[key: "productPage"] = i;
+                    tag.Attributes[key: "href"] = urlHelper.Action(action: this.PageAction, values: this.PageUrlValues);
+#pragma warning disable S4143
+                    tag.Attributes[key: "href"] = urlHelper.RouteUrl(routeName: this.PageRoute, values: this.PageUrlValues);
+#pragma warning restore S4143
 
                     if (this.PageClassesEnabled)
                     {

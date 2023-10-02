@@ -8,37 +8,37 @@ namespace SportsStore.Controllers
 {
     public class CartController : Controller
     {
-      private IStoreRepository repository;
+      private readonly IStoreRepository repository;
 
       public CartController(IStoreRepository repository)
         {
             this.repository = repository;
         }
 
-        [HttpGet]
-        public IActionResult Index(string returnUrl)
+      [HttpGet]
+      public IActionResult Index(string returnUrl)
         {
-          return View(new CartViewModel
+          return this.View(new CartViewModel
            {
                ReturnUrl = returnUrl ?? "/",
-               Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart(),
+               Cart = this.HttpContext.Session.GetJson<Cart>("cart") ?? new Cart(),
            });
         }
 
-        [HttpPost]
+      [HttpPost]
       public IActionResult Index(long productId, string returnUrl)
         {
-            Product? product = repository.Products.FirstOrDefault(p => p.ProductId == productId);
+            Product? product = this.repository.Products.FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)
             {
-                var cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
+                var cart = this.HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
                 cart.AddItem(product, 1);
-                HttpContext.Session.SetJson("cart", cart);
-                return View(new CartViewModel { Cart = cart, ReturnUrl = returnUrl });
+                this.HttpContext.Session.SetJson("cart", cart);
+                return this.View(new CartViewModel { Cart = cart, ReturnUrl = returnUrl });
             }
 
-            return RedirectToAction("Index", "Home");
+            return this.RedirectToAction("Index", "Home");
         }
     }
 }
