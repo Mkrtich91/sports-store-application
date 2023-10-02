@@ -44,6 +44,11 @@ app.MapControllerRoute(
     pattern: "/",
     defaults: new { Controller = "Home", action = "Index" });
 app.MapControllerRoute(
+      "checkout",
+      "Checkout",
+      new { Controller = "Order", action = "Checkout" });
+
+app.MapControllerRoute(
       "remove",
       "Remove",
       new { Controller = "Cart", action = "Remove" });
