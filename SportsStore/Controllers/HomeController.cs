@@ -20,25 +20,26 @@ namespace SportsStore.Controllers
 #pragma warning disable S1104
         public int PageSize = 4;
 #pragma warning restore S1104
-#pragma warning restore SA1401 
+#pragma warning restore SA1401
 #pragma warning restore SA1201
 #pragma warning restore CA1051
 
-        public ViewResult Index(int productPage = 1)
-        {
-            return this.View(new ProductsListViewModel
-            {
-                Products = this.repository.Products
-                               .OrderBy(p => p.ProductId)
-                               .Skip((productPage - 1) * this.PageSize)
-                               .Take(this.PageSize),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = productPage,
-                    ItemsPerPage = this.PageSize,
-                    TotalItems = this.repository.Products.Count(),
-                },
-            });
-        }
+        public ViewResult Index(string? category, int productPage = 1)
+     => View(new ProductsListViewModel
+     {
+         Products = repository.Products
+         .Where(p => category == null || p.Category == category)
+         .OrderBy(p => p.ProductId)
+         .Skip((productPage - 1) * PageSize)
+         .Take(PageSize),
+         PagingInfo = new PagingInfo
+         {
+             CurrentPage = productPage,
+             ItemsPerPage = PageSize,
+             TotalItems = category == null ? repository.Products.Count() : repository.Products.Where(e => e.Category == category).Count(),
+         },
+ 
+         CurrentCategory = category,
+     });
     }
 }

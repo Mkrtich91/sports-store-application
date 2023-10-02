@@ -21,6 +21,21 @@ app.MapControllerRoute(
     pattern: "Products/Page{productPage:int}",
     defaults: new { Controller = "Home", action = "Index", productPage = 1 });
 
+app.MapControllerRoute(
+     name: "categoryPage",
+     pattern: "{category}/Page{productPage:int}",
+     defaults: new { Controller = "Home", action = "Index" });
+  
+app.MapControllerRoute(
+    name: "category",
+    pattern: "Products/{category}",
+    defaults: new { Controller = "Home", action = "Index", productPage = 1 });
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "/",
+    defaults: new { Controller = "Home", action = "Index" });
+
 app.MapDefaultControllerRoute();
 
 SeedData.EnsurePopulated(app);
