@@ -19,7 +19,9 @@ namespace SportsStore.Controllers
         public Cart Cart { get; set; }
 
         [HttpGet]
+#pragma warning disable S4136
         public IActionResult Index(string returnUrl)
+#pragma warning restore S4136
         {
             return this.View(new CartViewModel
             {
@@ -32,12 +34,14 @@ namespace SportsStore.Controllers
         [Route("Cart/Remove")]
         public IActionResult Remove(long productId, string returnUrl)
         {
-            Cart.RemoveLine(Cart.Lines.First(cl => cl.Product.ProductId == productId).Product);
-            return View("Index", new CartViewModel
+            this.Cart.RemoveLine(this.Cart.Lines.First(cl => cl.Product.ProductId == productId).Product);
+#pragma warning disable SA1413
+            return this.View("Index", new CartViewModel
             {
-                Cart = Cart,
+                Cart = this.Cart,
                 ReturnUrl = returnUrl ?? "/"
             });
+#pragma warning restore SA1413
         }
 
         [HttpPost]
