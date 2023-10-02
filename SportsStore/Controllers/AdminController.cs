@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportsStore.Models;
 using SportsStore.Models.Repository;
 
 namespace SportsStore.Controllers
 {
+    [Authorize]
     [Route("Admin")]
   public class AdminController : Controller
     {
-        private IStoreRepository storeRepository;
-        private IOrderRepository orderRepository;
+        private readonly IStoreRepository storeRepository;
+        private readonly IOrderRepository orderRepository;
 
         public AdminController(IStoreRepository storeRepository, IOrderRepository orderRepository)
             => (this.storeRepository, this.orderRepository) = (storeRepository, orderRepository);
@@ -102,7 +104,9 @@ namespace SportsStore.Controllers
       public IActionResult DeleteProduct(int productId)
         {
             var product = storeRepository.Products.FirstOrDefault(p => p.ProductId == productId);
+#pragma warning disable CS8604 
             storeRepository.DeleteProduct(product);
+#pragma warning restore CS8604 
             return RedirectToAction("Products");
         }
 
