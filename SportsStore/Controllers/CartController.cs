@@ -8,34 +8,40 @@ namespace SportsStore.Controllers
 {
     public class CartController : Controller
     {
-      private readonly IStoreRepository repository;
+        private readonly IStoreRepository repository;
 
-      public CartController(IStoreRepository repository)
+        public CartController(IStoreRepository repository, Cart cart)
         {
             this.repository = repository;
+            this.Cart = cart;
         }
 
-      [HttpGet]
-      public IActionResult Index(string returnUrl)
+        public Cart Cart { get; set; }
+
+        [HttpGet]
+        public IActionResult Index(string returnUrl)
         {
-          return this.View(new CartViewModel
-           {
-               ReturnUrl = returnUrl ?? "/",
-               Cart = this.HttpContext.Session.GetJson<Cart>("cart") ?? new Cart(),
-           });
+            return this.View(new CartViewModel
+            {
+                ReturnUrl = returnUrl ?? "/",
+                Cart = this.Cart,
+            });
         }
 
-      [HttpPost]
-      public IActionResult Index(long productId, string returnUrl)
+        [HttpPost]
+        public IActionResult Index(long productId, string returnUrl)
         {
             Product? product = this.repository.Products.FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)
             {
-                var cart = this.HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
-                cart.AddItem(product, 1);
-                this.HttpContext.Session.SetJson("cart", cart);
-                return this.View(new CartViewModel { Cart = cart, ReturnUrl = returnUrl });
+                this.Cart.AddItem(product, 1);
+
+                return this.View(new CartViewModel
+                {
+                    Cart = this.Cart,
+                    ReturnUrl = returnUrl,
+                });
             }
 
             return this.RedirectToAction("Index", "Home");

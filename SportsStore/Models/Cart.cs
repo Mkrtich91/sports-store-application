@@ -11,7 +11,7 @@
             get { return this.lines; }
         }
 
-        public void AddItem(Product product, int quantity)
+        public virtual void AddItem(Product product, int quantity)
         {
 #pragma warning disable S2971
             CartLine? line = this.lines.
@@ -33,12 +33,12 @@
             }
         }
 
-        public void RemoveLine(Product product)
+        public virtual void RemoveLine(Product product)
             => this.lines.RemoveAll(l => l.Product.ProductId == product.ProductId);
 
         public decimal ComputeTotalValue()
             => this.lines.Sum(e => e.Product.Price * e.Quantity);
 
-        public void Clear() => this.lines.Clear();
+        public virtual void Clear() => this.lines.Clear();
     }
 }
