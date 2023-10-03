@@ -5,15 +5,15 @@
     }
 
     <table class="table table-sm table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <td />
-            </tr>
-        </thead>
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Price</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
         <tbody>
             @if (Model?.Count() > 0)
         {

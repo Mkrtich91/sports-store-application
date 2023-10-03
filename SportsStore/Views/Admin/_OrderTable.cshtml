@@ -2,7 +2,16 @@
 
 <table class="table table-sm table-striped table-bordered">
     <thead>
-        <tr><th colspan="5" class="text-center">@Model.TableTitle</th></tr>
+        <tr>
+            <th colspan="5" class="text-center" scope="col">@Model.TableTitle</th>
+        </tr>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Zip</th>
+            <th scope="col">Product</th>
+            <th scope="col">Quantity</th>
+            <th scope="col"></th>
+        </tr>
     </thead>
     <tbody>
         @if (Model.Orders.Any())
@@ -12,8 +21,8 @@
                 <tr>
                     <td>@o.Name</td>
                     <td>@o.Zip</td>
-                    <th>Product</th>
-                    <th>Quantity</th>
+                    <td>Product</td>
+                    <td>Quantity</td>
                     <td>
                         <form asp-action=@Model.CallbackMethodName method="post">
                             <input type="hidden" name="OrderId" value="@o.OrderId" />
@@ -36,7 +45,10 @@
         }
         else
         {
-            <tr><td colspan="5" class="text-center">No Orders</td></tr>
+            <tr>
+                <td colspan="5" class="text-center">No Orders</td>
+            </tr>
         }
     </tbody>
 </table>
+
